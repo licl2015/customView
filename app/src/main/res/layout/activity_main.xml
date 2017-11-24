@@ -12,6 +12,18 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_alignParentRight="true"
-        app:trapHeight="45dp" />
+
+        app:trapHeight="25dp" />
+
+    <com.licl.custom.customview.CornerLabelView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        app:bg_color="#FFAD2C"
+        app:position="right_top"
+        app:side_length="50dp"
+        app:text="Android"
+        app:text_color="#000000"
+        app:text_size="16sp" />
 
 </RelativeLayout>

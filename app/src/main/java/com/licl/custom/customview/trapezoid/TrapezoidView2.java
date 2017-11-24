@@ -96,6 +96,7 @@ public class TrapezoidView2 extends View {
 
     /**
      * 绘制文字
+     *
      * @param canvas
      */
     @Override
@@ -111,21 +112,30 @@ public class TrapezoidView2 extends View {
 
         if (!TextUtils.isEmpty(titleName)) {
             mTextPaint.getTextBounds(titleName, 0, titleName.length(), mTextBounds);
-            float topTitleBounds = getTopTitleBounds();
-            float leftTitleBounds = (int) Math.sqrt(2) * traHeight - (int) Math.sqrt(0.5) * mTextBounds.height();
+            double topTitleBounds = getTopTitleBounds();
+            double leftTitleBounds = Math.sqrt(2 * Math.pow(traHeight, 2)) - Math.sqrt(0.5) * mTextBounds.height();
+//            double topTitleBounds = getContentTop();
+//            double leftTitleBounds = getContentLeft(topTitleBounds);
 
-            drawText(canvas, titleName, leftTitleBounds, topTitleBounds, mTextPaint, 45);
-
+            drawText(canvas, titleName, (float) (leftTitleBounds ), (float) (topTitleBounds ), mTextPaint, 45);
         }
     }
 
-    private float getTopTitleBounds() {
-        int basH = (int) (traHeight - mTextBounds.height()) / 2;
+    private float getNewY(float baseY, Paint paint) {
+        Paint.FontMetrics fontMetrics = paint.getFontMetrics();
+        float fontTotalHeight = fontMetrics.bottom - fontMetrics.top;
+        float offY = fontTotalHeight / 2 - fontMetrics.bottom;
+        return baseY + offY;
+    }
 
-        int xBwidth = (int) Math.sqrt(Math.pow(mBounds.width(), 2) + Math.pow(mBounds.height(), 2));
-        int basW = (int) (xBwidth - 2 * traHeight - mTextBounds.width()) / 2;
+    private double getTopTitleBounds() {
+        float basH = (traHeight - mTextBounds.height()) / 2;
 
-        float topTitleBounds = (int) Math.sqrt(Math.pow(basH, 2) + Math.pow(basW, 2));
+        double xBwidth = Math.sqrt(Math.pow(mBounds.width(), 2) + Math.pow(mBounds.height(), 2));
+
+        double basW = (xBwidth - 2 * traHeight - mTextBounds.width()) / 2;
+
+        double topTitleBounds = Math.sqrt(Math.pow(basH, 2) + Math.pow(basW, 2));
 
         topTitleBounds += Math.sqrt(0.5) * mTextBounds.height();
         return topTitleBounds;
@@ -139,5 +149,15 @@ public class TrapezoidView2 extends View {
         if (angle != 0) {
             canvas.rotate(-angle, x, y);
         }
+    }
+
+    private double getContentLeft(double top) {
+        double left = (Math.sqrt(2 * Math.pow(traHeight, 2)) - Math.sqrt(2 * Math.pow(mTextBounds.height(), 2))) / 2;
+        return left + top;
+    }
+
+
+    private double getContentTop() {
+        return Math.sqrt(2 * Math.pow(mTextBounds.height(), 2));
     }
 }
